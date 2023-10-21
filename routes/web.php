@@ -3,12 +3,9 @@
 use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\BookTour\BookTourController;
 use App\Http\Controllers\Admin\Category\CategoryController;
-use App\Http\Controllers\Admin\Color\ColorController;
 use App\Http\Controllers\Admin\Destination\DestinationController;
 use App\Http\Controllers\Admin\Group\GroupController;
 use App\Http\Controllers\Admin\Post\PostController;
-use App\Http\Controllers\Admin\Product\ProductController;
-use App\Http\Controllers\Admin\Size\SizeController;
 use App\Http\Controllers\Admin\Tag\TagController;
 use App\Http\Controllers\Admin\Tour\TourController;
 use App\Http\Controllers\Admin\User\UserController;
@@ -16,7 +13,6 @@ use App\Http\Controllers\Admin\Vehicle\VehicleController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Client\ClientController;
-use App\Http\Controllers\BotManController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,6 +38,7 @@ Route::prefix('/')->name('client.')->group(function () {
     Route::post('/book-tour/{slug}', [ClientController::class, 'hanldeBookTour'])->middleware('auth-client')->name('handle-book-tour');
     Route::get('/booking-success', [ClientController::class, 'bookingSuccess'])->middleware('auth-client')->name('booking-success');
     Route::get('/about-us', [ClientController::class, 'aboutUs'])->name('about-us');
+    Route::get('/hotel', [ClientController::class, 'hotel'])->name('hotel');
     Route::get('/user', [ClientController::class, 'userInfo'])->name('user');
     Route::get('/user/history-book-tour', [ClientController::class, 'historyBookTour'])->name('history-book-tour');
     Route::get('/user/change-password', [ClientController::class, 'changePassword'])->name('change-password');

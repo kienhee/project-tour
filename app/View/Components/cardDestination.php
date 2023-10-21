@@ -11,12 +11,14 @@ class cardDestination extends Component
     /**
      * Create a new component instance.
      */
+    public $id;
     public $slug;
     public $cover;
     public $name;
     public $totalTours;
-    public function __construct($slug, $cover, $name, $totalTours)
+    public function __construct($slug,$id, $cover, $name, $totalTours)
     {
+        $this->id = $id;
         $this->slug = $slug;
         $this->cover = $cover;
         $this->name = $name;
