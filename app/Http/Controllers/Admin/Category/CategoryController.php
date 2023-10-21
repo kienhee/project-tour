@@ -109,10 +109,6 @@ class CategoryController extends Controller
     }
     public function forceDelete($id)
     {
-        $CheckProductExists = Product::where('category_id', $id)->get();
-        if ($CheckProductExists->count() > 0) {
-            return back()->with('msgError', 'Còn ' . $CheckProductExists->count() . ' sản phẩm trong danh mục , không thể xóa');
-        }
         $check = Category::onlyTrashed()->where('id', $id)->forceDelete();
         if ($check) {
             return back()->with('msgSuccess', 'Xóa thành công');

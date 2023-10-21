@@ -73,8 +73,28 @@ class ClientController extends Controller
         }
         return back()->with('msgError', 'Cập nhật thất bại!');
     }
-    public function tour()
+    public function tour(Request $request)
     {
+        // $result = Tour::query();
+
+        // if ($request->has('keywords') && $request->keywords != null) {
+        //     $result->where('name', 'like', '%' . $request->keywords . '%');
+        // }
+
+        // if ($request->has('sort') && $request->sort != null) {
+        //     $result->orderBy('created_at', $request->sort);
+        // } else {
+        //     $result->orderBy('created_at', 'desc');
+        // }
+        // if ($request->has('status') && $request->status != null && $request->status == 'active') {
+        //     $result->where('deleted_at', "=", null);
+        // } elseif ($request->has('status') && $request->status != null && $request->status == 'inactive') {
+        //     $result->onlyTrashed();
+        // } else {
+        //     $result->withTrashed();
+        // }
+        // $categories = $result->paginate(10);
+        // return view('admin.category.index', compact('categories'));
         $tours = Tour::OrderBy('created_at', 'DESC')->get();
         return view('client.tour', compact('tours'));
     }

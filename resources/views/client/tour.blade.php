@@ -7,10 +7,10 @@
         <div class="container">
             <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-center">
                 <div class="col-md-9 ftco-animate pb-5 text-center">
-                    <p class="breadcrumbs"><span class="mr-2"><a href="/">Home <i
-                                    class="fa fa-chevron-right"></i></a></span> <span>Tour List <i
+                    <p class="breadcrumbs"><span class="mr-2"><a href="/">Trang chủ <i
+                                    class="fa fa-chevron-right"></i></a></span> <span>Danh sách chuyến đi<i
                                 class="fa fa-chevron-right"></i></span></p>
-                    <h1 class="mb-0 bread">Tours List</h1>
+                    <h1 class="mb-0 bread">Danh sách chuyến đi</h1>
                 </div>
             </div>
         </div>
@@ -25,54 +25,76 @@
                             <div class="row no-gutters">
                                 <div class="col-lg d-flex">
                                     <div class="form-group p-4 border-0">
-                                        <label for="#">Destination</label>
+                                        <label for="#">Tên chuyến đi</label>
                                         <div class="form-field">
                                             <div class="icon"><span class="fa fa-search"></span></div>
-                                            <input type="text" class="form-control" placeholder="Search place">
+                                            <input type="text" class="form-control" placeholder="Tìm kiếm chuyến đi">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg d-flex">
                                     <div class="form-group p-4">
-                                        <label for="#">Check-in date</label>
+                                        <label for="#">Khởi hành</label>
                                         <div class="form-field">
                                             <div class="icon"><span class="fa fa-calendar"></span></div>
                                             <input type="text" class="form-control checkin_date"
-                                                placeholder="Check In Date">
+                                                placeholder="Chọn ngày">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg d-flex">
                                     <div class="form-group p-4">
-                                        <label for="#">Check-out date</label>
+                                        <label for="#">Quay về</label>
                                         <div class="form-field">
                                             <div class="icon"><span class="fa fa-calendar"></span></div>
                                             <input type="text" class="form-control checkout_date"
-                                                placeholder="Check Out Date">
+                                                placeholder="Chọn ngày">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg d-flex">
                                     <div class="form-group p-4">
-                                        <label for="#">Price Limit</label>
+                                        <label for="#">Khoảng giá</label>
                                         <div class="form-field">
                                             <div class="select-wrap">
                                                 <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                                                <select name="" id="" class="form-control">
-                                                    <option value="">$5,000</option>
-                                                    <option value="">$10,000</option>
-                                                    <option value="">$50,000</option>
-                                                    <option value="">$100,000</option>
-                                                    <option value="">$200,000</option>
-                                                    <option value="">$300,000</option>
-                                                    <option value="">$400,000</option>
-                                                    <option value="">$500,000</option>
-                                                    <option value="">$600,000</option>
-                                                    <option value="">$700,000</option>
-                                                    <option value="">$800,000</option>
-                                                    <option value="">$900,000</option>
-                                                    <option value="">$1,000,000</option>
-                                                    <option value="">$2,000,000</option>
+                                                <select name="price" id="" class="form-control">
+                                                    <option value="">Tất cả</option>
+                                                    <option value="">100.000vnd</option>
+                                                    <option value="">200.000vnd</option>
+                                                    <option value="">300.000vnd</option>
+                                                    <option value="">400.000vnd</option>
+                                                    <option value="">500.000vnd</option>
+                                                    <option value="">600.000vnd</option>
+                                                    <option value="">700.000vnd</option>
+                                                    <option value="">800.000vnd</option>
+                                                    <option value="">900.000vnd</option>
+                                                    <option value="">1.000.000vnd</option>
+                                                    <option value="">2.000.000vnd</option>
+                                                    <option value="">3.000.000vnd</option>
+                                                    <option value="">4.000.000vnd</option>
+                                                    <option value="">5.000.000vnd</option>
+                                                    <option value="">6.000.000vnd</option>
+                                                    <option value="">7.000.000vnd</option>
+                                                    <option value="">8.000.000vnd</option>
+                                                    <option value="">9.000.000vnd</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg d-flex">
+                                    <div class="form-group p-4">
+                                        <label for="destination">Địa điểm</label>
+                                        <div class="form-field">
+                                            <div class="select-wrap">
+                                                <div class="icon"><span class="fa fa-chevron-down"></span></div>
+                                                <select name="destination" id="destination" class="form-control">
+                                                    <option value="">Tất cả</option>
+                                                    @foreach (getAllDestination() as $item)
+                                                    <option value="{{$item->slug}}">{{$item->name }}</option>
+                                                    @endforeach
+                                                    
                                                 </select>
                                             </div>
                                         </div>
@@ -81,8 +103,8 @@
                                 <div class="col-lg d-flex">
                                     <div class="form-group d-flex w-100 border-0">
                                         <div class="form-field w-100 align-items-center d-flex">
-                                            <input type="submit" value="Search"
-                                                class="align-self-stretch form-control btn btn-primary">
+                                            <input type="submit" value="Tìm kiếm"
+                                                class="pl-0 align-self-stretch form-control btn btn-primary">
                                         </div>
                                     </div>
                                 </div>
