@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\Vehicle\VehicleController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Client\ClientController;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,10 +52,10 @@ Route::prefix('/')->name('client.')->group(function () {
     Route::get('/logout', [ClientController::class, 'logout'])->name('logout');
 });
 
-Route::prefix('/dashboard')->name('dashboard.')->middleware('auth')->group(function () {
+Route::prefix('/dashboard')->name('dashboard.')->middleware('auth', 'can:admin')->group(function () {
     Route::get('/', [DashboardController::class, 'dashboard'])->name('index');
     // Quản lý danh mục
-    Route::prefix('destinations')->name('destination.')->group(function () {
+    Route::prefix('destinations')->name('destination.')->middleware('can:destinations')->group(function () {
         Route::get('/', [DestinationController::class, 'index'])->name('index');
         Route::get('/add', [DestinationController::class, 'add'])->name('add');
         Route::post('/add', [DestinationController::class, 'store'])->name('store');
@@ -64,17 +65,7 @@ Route::prefix('/dashboard')->name('dashboard.')->middleware('auth')->group(funct
         Route::delete('/force-delete/{id}', [DestinationController::class, 'forceDelete'])->name('force-delete');
         Route::delete('/restore/{id}', [DestinationController::class, 'restore'])->name('restore');
     });
-    Route::prefix('categories')->name('category.')->group(function () {
-        Route::get('/', [CategoryController::class, 'index'])->name('index');
-        Route::get('/add', [categoryController::class, 'add'])->name('add');
-        Route::post('/add', [categoryController::class, 'store'])->name('store');
-        Route::get('/edit/{category}', [categoryController::class, 'edit'])->name('edit');
-        Route::put('/edit/{id}', [categoryController::class, 'update'])->name('update');
-        Route::delete('/soft-delete/{id}', [categoryController::class, 'softDelete'])->name('soft-delete');
-        Route::delete('/force-delete/{id}', [categoryController::class, 'forceDelete'])->name('force-delete');
-        Route::delete('/restore/{id}', [categoryController::class, 'restore'])->name('restore');
-    });
-    Route::prefix('tours')->name('tour.')->group(function () {
+    Route::prefix('tours')->name('tour.')->middleware('can:tours')->group(function () {
         Route::get('/', [TourController::class, 'index'])->name('index');
         Route::get('/add', [TourController::class, 'add'])->name('add');
         Route::post('/add', [TourController::class, 'store'])->name('store');
@@ -84,15 +75,15 @@ Route::prefix('/dashboard')->name('dashboard.')->middleware('auth')->group(funct
         Route::delete('/force-delete/{id}', [TourController::class, 'forceDelete'])->name('force-delete');
         Route::delete('/restore/{id}', [TourController::class, 'restore'])->name('restore');
     });
-    Route::prefix('book-tours')->name('book-tour.')->group(function () {
+    Route::prefix('book-tours')->name('book-tour.')->middleware('can:book-tours')->group(function () {
         Route::get('/', [BookTourController::class, 'index'])->name('index');
         Route::get('/view/{tour}', [BookTourController::class, 'viewDetail'])->name('view-detail');
         Route::put('/view/{id}', [BookTourController::class, 'updateStatus'])->name('update-status');
         Route::delete('/delete/{id}', [BookTourController::class, 'delete'])->name('delete');
     });
 
-    Route::prefix('posts')->name('post.')->group(function () {
-        Route::get('/', [PostController::class, 'index'])->name('index');
+    Route::prefix('posts')->name('post.')->middleware('can:posts')->group(function () {
+        Route::get('/', [PostController::class, 'index'])->name('index')->can('viewAny', Post::class);
         Route::get('/add', [PostController::class, 'add'])->name('add');
         Route::post('/add', [PostController::class, 'store'])->name('store');
         Route::get('/edit/{post}', [PostController::class, 'edit'])->name('edit');
@@ -102,7 +93,7 @@ Route::prefix('/dashboard')->name('dashboard.')->middleware('auth')->group(funct
         Route::delete('/restore/{id}', [PostController::class, 'restore'])->name('restore');
     });
 
-    Route::prefix('vehicles')->name('vehicle.')->group(function () {
+    Route::prefix('vehicles')->name('vehicle.')->middleware('can:vehicles')->group(function () {
         Route::get('/', [VehicleController::class, 'index'])->name('index');
         Route::get('/add', [VehicleController::class, 'add'])->name('add');
         Route::post('/add', [VehicleController::class, 'store'])->name('store');
@@ -110,7 +101,7 @@ Route::prefix('/dashboard')->name('dashboard.')->middleware('auth')->group(funct
         Route::put('/edit/{id}', [VehicleController::class, 'update'])->name('update');
         Route::delete('/delete/{id}', [VehicleController::class, 'delete'])->name('delete');
     });
-    Route::prefix('tags')->name('tag.')->group(function () {
+    Route::prefix('tags')->name('tag.')->middleware('can:tags')->group(function () {
         Route::get('/', [TagController::class, 'index'])->name('index');
         Route::get('/add', [TagController::class, 'add'])->name('add');
         Route::post('/add', [TagController::class, 'store'])->name('store');
@@ -119,17 +110,18 @@ Route::prefix('/dashboard')->name('dashboard.')->middleware('auth')->group(funct
         Route::delete('/delete/{id}', [TagController::class, 'delete'])->name('delete');
     });
     // Quản lý nhóm người dùng
-    Route::prefix('groups')->name('group.')->group(function () {
+    Route::prefix('groups')->name('group.')->middleware('can:groups')->group(function () {
         Route::get('/', [GroupController::class, 'index'])->name('index');
         Route::get('/add', [GroupController::class, 'add'])->name('add');
         Route::post('/add', [GroupController::class, 'store'])->name('store');
         Route::get('/edit/{group}', [GroupController::class, 'edit'])->name('edit');
         Route::put('/edit/{id}', [GroupController::class, 'update'])->name('update');
-
         Route::delete('/delete/{id}', [GroupController::class, 'delete'])->name('delete');
+        Route::get('/permissions/{group}', [GroupController::class, 'permissions'])->name('permissions');
+        Route::put('/permissions/{id}', [GroupController::class, 'postPermissions'])->name('postPermissions');
     });
     // Quản lý người dùng
-    Route::prefix('users')->name('user.')->group(function () {
+    Route::prefix('users')->name('user.')->middleware('can:users')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('/add', [UserController::class, 'add'])->name('add');
         Route::post('/add', [UserController::class, 'store'])->name('store');

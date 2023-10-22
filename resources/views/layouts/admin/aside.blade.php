@@ -1,38 +1,39 @@
 <!-- Menu -->
 @php
-    // function isActive($child)
-    // {
-    //     foreach ($child as $item) {
-    //         if (url()->current() == route($item['route'])) {
-    //             return true;
-    //         }
-    //     }
-    // }
+    function isActive($child)
+    {
+        foreach ($child as $item) {
+            if (url()->current() == route($item['route'])) {
+                return true;
+            }
+        }
+    }
     $menu = [
         [
             'name' => 'Tổng quan',
             'classIcon' => 'menu-icon tf-icons bx bx-home-circle',
             'route' => 'dashboard.index',
+            'can' => 'dashboard',
             'children' => [],
         ],
         [
             'name' => 'Quản lý địa điểm',
             'classIcon' => 'menu-icon tf-icons bx bxs-edit-location',
-
+            'can' => 'destinations',
             'route' => '#',
             'children' => [['name' => 'Thêm mới địa điểm', 'route' => 'dashboard.destination.add'], ['name' => 'Danh sách địa điểm', 'route' => 'dashboard.destination.index']],
         ],
         [
             'name' => 'Quản lý chuyến đi',
             'classIcon' => 'menu-icon tf-icons bx bx-car',
-
+            'can' => 'tours',
             'route' => '#',
             'children' => [['name' => 'Thêm mới chuyến đi', 'route' => 'dashboard.tour.add'], ['name' => 'Danh sách chuyến đi', 'route' => 'dashboard.tour.index'], ['name' => 'Danh sách các xe hiện tại', 'route' => 'dashboard.vehicle.index']],
         ],
         [
             'name' => 'Quản lý đặt tour',
             'classIcon' => 'menu-icon tf-icons bx bx-category',
-
+            'can' => 'book-tours',
             'route' => '#',
             'children' => [['name' => 'Tất cả', 'route' => 'dashboard.book-tour.index']],
         ],
@@ -40,18 +41,21 @@
         [
             'name' => 'Quản lý bài viết',
             'classIcon' => 'menu-icon tf-icons bx bx-news',
+            'can' => 'posts',
             'route' => '#',
             'children' => [['name' => 'Danh sách bài viết', 'route' => 'dashboard.post.index'], ['name' => 'Tags', 'route' => 'dashboard.tag.index']],
         ],
         [
             'name' => 'Quản lý nhóm',
             'classIcon' => 'menu-icon tf-icons bx bxs-group',
+            'can' => 'groups',
             'route' => '#',
             'children' => [['name' => 'Thêm nhóm mới', 'route' => 'dashboard.group.add'], ['name' => 'Danh sách nhóm', 'route' => 'dashboard.group.index']],
         ],
         [
             'name' => 'Quản lý người dùng',
             'classIcon' => 'menu-icon tf-icons bx bxs-user-account',
+            'can' => 'users',
             'route' => '#',
             'children' => [['name' => 'Thêm mới thành viên', 'route' => 'dashboard.user.add'], ['name' => 'Danh sách người dùng', 'route' => 'dashboard.user.index']],
         ],
@@ -148,7 +152,8 @@
     <div class="app-brand demo">
         <a href="{{ route('dashboard.index') }}" class="app-brand-link">
 
-            <span class="app-brand-text demo menu-text fw-bolder ms-2" style="text-transform: uppercase">Royal Boy</span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2" style="text-transform: uppercase">Royal
+                Boy</span>
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -160,33 +165,35 @@
 
     <ul class="menu-inner py-1">
         @foreach ($menu as $item)
-            @if (empty($item['children']))
-                <li class="menu-item {{ url()->current() == route($item['route']) ? 'active' : '' }}">
-                    <a href="{{ url()->current() == route($item['route']) ? 'javascript:void(0)' : route($item['route']) }}"
-                        class="menu-link">
-                        <i class="{{ $item['classIcon'] }}"></i>
-                        <div data-i18n="{{ $item['name'] }}">{{ $item['name'] }}</div>
-                    </a>
-                </li>
-            @else
-                <li class="menu-item  ">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <i class="{{ $item['classIcon'] }}"></i>
-                        <div data-i18n="{{ $item['name'] }}">{{ $item['name'] }} </div>
-                    </a>
-                    <ul class="menu-sub">
-                        @foreach ($item['children'] as $children)
-                            <li class="menu-item {{ url()->current() == route($children['route']) ? 'active' : '' }}">
-                                <a href="{{ url()->current() == route($children['route']) ? 'javascript:void(0)' : route($children['route']) }}"
-                                    class="menu-link">
-                                    <div data-i18n="{{ $children['name'] }}">{{ $children['name'] }}</div>
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
+            @can($item['can'])
+                @if (empty($item['children']))
+                    <li class="menu-item {{ url()->current() == route($item['route']) ? 'active' : '' }}">
+                        <a href="{{ url()->current() == route($item['route']) ? 'javascript:void(0)' : route($item['route']) }}"
+                            class="menu-link">
+                            <i class="{{ $item['classIcon'] }}"></i>
+                            <div data-i18n="{{ $item['name'] }}">{{ $item['name'] }}</div>
+                        </a>
+                    </li>
+                @else
+                    <li class="menu-item {{ isActive($item['children']) ? 'active open' : '' }} ">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="{{ $item['classIcon'] }}"></i>
+                            <div data-i18n="{{ $item['name'] }}">{{ $item['name'] }} </div>
+                        </a>
+                        <ul class="menu-sub">
+                            @foreach ($item['children'] as $children)
+                                <li class="menu-item {{ url()->current() == route($children['route']) ? 'active' : '' }}">
+                                    <a href="{{ url()->current() == route($children['route']) ? 'javascript:void(0)' : route($children['route']) }}"
+                                        class="menu-link">
+                                        <div data-i18n="{{ $children['name'] }}">{{ $children['name'] }}</div>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
 
-                </li>
-            @endif
+                    </li>
+                @endif
+            @endcan
         @endforeach
         {{-- Nơi dành cho routes mode development --}}
         @if (getEnv('APP_ENV') == 'local')
@@ -201,7 +208,7 @@
                         </a>
                     </li>
                 @else
-                    <li class="menu-item ">
+                    <li class="menu-item {{ isActive($item['children']) ? 'active open' : '' }} ">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="{{ $item['classIcon'] }}"></i>
                             <div data-i18n="{{ $item['name'] }}">{{ $item['name'] }} </div>
