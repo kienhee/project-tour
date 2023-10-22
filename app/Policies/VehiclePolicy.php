@@ -2,19 +2,19 @@
 
 namespace App\Policies;
 
-use App\Models\Post;
 use App\Models\User;
+use App\Models\Vehicle;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Auth;
 
-class PostPolicy
+class VehiclePolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public $role;
 
-    public $module = 'posts';
+    public $module = 'vehicles';
 
     public function __construct()
     {
@@ -29,7 +29,7 @@ class PostPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Post $post)
+    public function view(User $user, Vehicle $vehicle)
     {
         //
     }
@@ -61,7 +61,7 @@ class PostPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Post $post)
+    public function restore(User $user, Vehicle $vehicle)
     {
         //
     }
@@ -69,7 +69,7 @@ class PostPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Post $post)
+    public function forceDelete(User $user, Vehicle $vehicle)
     {
         //
     }

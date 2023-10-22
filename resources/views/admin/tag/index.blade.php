@@ -9,8 +9,16 @@
         childrenName="Danh sách {{ $moduleName }}" />
     <div class="card">
         <x-alert />
-        <x-header-table tableName="Danh sách {{ $moduleName }}" link="dashboard.tag.add"
-            linkName="Tạo {{ $moduleName }}" />
+        @can('create', App\Models\Tag::class)
+            <x-header-table tableName="Danh sách {{ $moduleName }}" link="dashboard.tag.add"
+                linkName="Tạo {{ $moduleName }}" />
+        @else
+            <div class="d-flex justify-content-between align-items-center mx-3">
+                <h5 class="card-header px-0"> Danh sách {{ $moduleName }}</h5>
+            </div>
+            <hr class="my-0" />
+        @endcan
+
 
         <div class="table-responsive text-nowrap mt-4">
             <table class="table">
@@ -45,20 +53,31 @@
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="{{ route('dashboard.tag.edit', $item->id) }}"><i
-                                                    class="bx bx-edit-alt me-1"></i>
-                                                Sửa thông tin</a>
-                                            <form class="dropdown-item"
-                                                action="{{ route('dashboard.tag.delete', $item->id) }}" method="POST"
-                                                onsubmit="return confirm('Bạn chắc chắn muốn xóa vĩnh viễn?')">
-                                                @csrf
-                                                @method('delete')
-                                                <button class="btn p-0  w-100 text-start" type="submit">
-                                                    <i class="bx bx-trash  me-1"></i>
-                                                    Xóa vĩnh viễn
-                                                </button>
-                                            </form>
-
+                                            @can('update', App\Models\Tag::class)
+                                                <a class="dropdown-item" href="{{ route('dashboard.tag.edit', $item->id) }}"><i
+                                                        class="bx bx-edit-alt me-1"></i>
+                                                    Sửa thông tin</a>
+                                            @else
+                                                <a class="dropdown-item" href="javascript:void(0)"><i
+                                                        class="bx bx-edit-alt me-1"></i>
+                                                    Không có quyền sửa</a>
+                                            @endcan
+                                            @can('delete', App\Models\Tag::class)
+                                                <form class="dropdown-item"
+                                                    action="{{ route('dashboard.tag.delete', $item->id) }}" method="POST"
+                                                    onsubmit="return confirm('Bạn chắc chắn muốn xóa vĩnh viễn?')">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button class="btn p-0  w-100 text-start" type="submit">
+                                                        <i class="bx bx-trash  me-1"></i>
+                                                        Xóa vĩnh viễn
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <a class="dropdown-item" href="javascript:void(0)"><i
+                                                        class="bx bx-trash me-1"></i>
+                                                    Không có quyền xóa</a>
+                                            @endcan
 
                                         </div>
                                     </div>

@@ -2,9 +2,9 @@
 
 namespace App\View\Components;
 
-use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Closure;
 
 class headerTable extends Component
 {
@@ -12,8 +12,11 @@ class headerTable extends Component
      * Create a new component instance.
      */
     public $tableName;
+
     public $link;
+
     public $linkName;
+
     public function __construct($tableName, $link, $linkName)
     {
         $this->tableName = $tableName;

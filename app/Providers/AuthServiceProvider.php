@@ -25,8 +25,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
-        // 1 lấy danh sách modules
+        //  Mở comment dưới sau khi chạy migrate-> tránh lỗi
+
         $modules = Module::all();
         if ($modules->count() > 0) {
             foreach ($modules as $module) {

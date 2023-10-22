@@ -8,8 +8,15 @@
         childrenName="Danh sách {{ $moduleName }}" />
     <div class="card">
         <x-alert />
-        <x-header-table tableName="Danh sách {{ $moduleName }}" link="dashboard.destination.add"
-            linkName="Tạo {{ $moduleName }}" />
+        @can('create', App\Models\Destination::class)
+            <x-header-table tableName="Danh sách {{ $moduleName }}" link="dashboard.destination.add"
+                linkName="Tạo {{ $moduleName }}" />
+        @else
+            <div class="d-flex justify-content-between align-items-center mx-3">
+                <h5 class="card-header px-0"> Danh sách {{ $moduleName }}</h5>
+            </div>
+            <hr class="my-0" />
+        @endcan
         <form method="GET" class="mx-3 mb-4 mt-4">
             <div class="row ">
                 <div class="col-md-6 col-lg-3 mb-2">
@@ -92,38 +99,49 @@
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item"
-                                                href="{{ route('dashboard.destination.edit', $item->id) }}"><i
-                                                    class="bx bx-edit-alt me-1"></i>
-                                                Xem chi tiết</a>
+                                            @can('update', App\Models\Destination::class)
+                                                <a class="dropdown-item"
+                                                    href="{{ route('dashboard.destination.edit', $item->id) }}"><i
+                                                        class="bx bx-edit-alt me-1"></i>
+                                                    Xem thêm</a>
+                                            @else
+                                                <a class="dropdown-item" href="javascript:void(0)"><i
+                                                        class="bx bx-edit-alt me-1"></i>
+                                                    Không có quyền sửa</a>
+                                            @endcan
 
-                                            @if (Auth::user()->id != $item->id)
-                                                @if ($item->trashed() == 1)
+                                            @can('delete', App\Models\Destination::class)
+                                                @if (Auth::user()->id != $item->id)
+                                                    @if ($item->trashed() == 1)
+                                                        <form class="dropdown-item"
+                                                            action="{{ route('dashboard.destination.restore', $item->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('delete')
+                                                            <button class="btn p-0  w-100 text-start" type="submit">
+                                                                <i class='bx bx-revision'></i>
+                                                                Hiện địa điểm
+                                                            </button>
+                                                        </form>
+                                                    @endif
                                                     <form class="dropdown-item"
-                                                        action="{{ route('dashboard.destination.restore', $item->id) }}"
-                                                        method="POST">
+                                                        action="{{ $item->trashed() ? route('dashboard.destination.force-delete', $item->id) : route('dashboard.destination.soft-delete', $item->id) }}"
+                                                        method="POST"
+                                                        @if ($item->trashed()) onsubmit="return confirm('Bạn chắc chắn muốn xóa vĩnh viễn?')" @endif>
                                                         @csrf
                                                         @method('delete')
                                                         <button class="btn p-0  w-100 text-start" type="submit">
-                                                            <i class='bx bx-revision'></i>
-                                                            Hiện địa điểm
+                                                            <i
+                                                                class="bx {{ $item->trashed() ? 'bx-trash' : 'bx bxs-hand' }}  me-1"></i>
+                                                            {{ $item->trashed() ? 'Xóa vĩnh viễn' : 'Tạm ẩn địa điểm' }}
                                                         </button>
                                                     </form>
                                                 @endif
-                                                <form class="dropdown-item"
-                                                    action="{{ $item->trashed() ? route('dashboard.destination.force-delete', $item->id) : route('dashboard.destination.soft-delete', $item->id) }}"
-                                                    method="POST"
-                                                    @if ($item->trashed()) onsubmit="return confirm('Bạn chắc chắn muốn xóa vĩnh viễn?')" @endif>
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button class="btn p-0  w-100 text-start" type="submit">
-                                                        <i
-                                                            class="bx {{ $item->trashed() ? 'bx-trash' : 'bx bxs-hand' }}  me-1"></i>
-                                                        {{ $item->trashed() ? 'Xóa vĩnh viễn' : 'Tạm ẩn địa điểm' }}
-                                                    </button>
-                                                </form>
-                                            @endif
-
+                                            @else
+                                                <a class="dropdown-item" href="javascript:void(0)"><i
+                                                        class="bx bx-trash me-1"></i>
+                                                    Không có quyền xóa</a>
+                                            @endcan
                                         </div>
                                     </div>
                                 </td>
