@@ -43,6 +43,7 @@ Route::prefix('/')->name('client.')->group(function () {
     Route::post('/add-favourite', [ClientController::class, 'addFavourite'])->middleware('auth-client')->name('add-favourite');
     Route::delete('/remove-favourite', [ClientController::class, 'removeFavourite'])->middleware('auth-client')->name('remove-favourite');
     Route::get('/tour/{slug}', [ClientController::class, 'tourDetail'])->name('tour-detail');
+    Route::post('/tour/{slug}', [ClientController::class, 'ratingTour'])->name('rating-tour');
     Route::get('/book-tour/{slug}', [ClientController::class, 'bookTour'])->middleware('auth-client')->name('book-tour');
     Route::post('/book-tour/{slug}', [ClientController::class, 'hanldeBookTour'])->middleware('auth-client')->name('handle-book-tour');
     Route::get('/booking-success', [ClientController::class, 'bookingSuccess'])->middleware('auth-client')->name('booking-success');

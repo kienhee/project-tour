@@ -51,6 +51,7 @@
                         <th class="px-1 text-center" style="width: 50px">#ID</th>
                         <th class="px-1 text-center" style="width: 50px"></th>
                         <th>Chuyến đi </th>
+                        <th>Khách hàng </th>
                         <th class=" text-center" style="width: 100px">Số lượng người</th>
                         <th class=" text-center" style="width: 100px">Còn trống chỗ</th>
                         <th class=" text-center" style="width: 100px">Ngày đặt</th>
@@ -84,7 +85,9 @@
                                         <small>{{ nightOfDay($item->tour->date_of_department, $item->tour->return_date) }}</small>
                                     </a>
                                 </td>
-
+<td>
+    {{$item->full_name}}
+</td>
                                 <td class="px-0 text-center">
                                     {{ $item->adult + $item->children }}
                                 </td>

@@ -20,14 +20,108 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 ftco-animate py-md-5 mt-md-5">
+
+                    @if (session('msgSuccess'))
+                        <div class="alert alert-info" role="alert">
+                            {{ session('msgSuccess') }}
+                        </div>
+                    @endif
+                    @if (session('msgError'))
+                        <div class="alert alert-danger" role="alert">
+                            {{ session('msgError') }}
+                        </div>
+                    @endif
+
                     {!! $tour->content !!}
+                    <hr>
+                    <div class="">
+                        <h3 class="mb-5" style="font-size: 20px; font-weight: bold;">6 Đánh giá</h3>
+                        <ul class="comment-list">
+                            @foreach ($rated as $item)
+                                <li class="comment">
+                                    <div class="vcard bio">
+                                        <img src="{{ $item->user->avatar ?? '/images/avatar-default.png' }}"
+                                            alt="Image placeholder">
+                                    </div>
+                                    <div class="comment-body">
+                                        <h3>{{ $item->user->full_name }}</h3>
+                                        <div class="meta"> {{ $item->created_at->format('d/m/Y h:m A') }}</div>
+                                        <p>{{ $item->message }}</p>
+                                    </div>
+                                </li>
+                            @endforeach
+
+
+
+
+                        </ul>
+                        @if ($checkRate)
+                            <div class="comment-form-wrap pt-5">
+                                <h3 class="mb-5 text-center" style="font-size: 20px; font-weight: bold;">Để lại một đánh giá
+                                </h3>
+
+
+                                <form action="{{ route('client.rating-tour', $tour->slug) }}" method="POST"
+                                    class="p-5 bg-light">
+                                    @csrf
+                                    <div id="full-stars-example-two" class="d-flex justify-content-center">
+                                        <div class="rating-group">
+                                            <label aria-label="1 star" class="rating__label" for="rating-1"><i
+                                                    class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                            <input class="rating__input" name="rating" id="rating-1" value="1"
+                                                type="radio" checked>
+                                            <label aria-label="2 stars" class="rating__label" for="rating-2"><i
+                                                    class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                            <input class="rating__input" name="rating" id="rating-2" value="2"
+                                                type="radio">
+                                            <label aria-label="3 stars" class="rating__label" for="rating-3"><i
+                                                    class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                            <input class="rating__input" name="rating" id="rating-3" value="3"
+                                                type="radio">
+                                            <label aria-label="4 stars" class="rating__label" for="rating-4"><i
+                                                    class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                            <input class="rating__input" name="rating" id="rating-4" value="4"
+                                                type="radio">
+                                            <label aria-label="5 stars" class="rating__label" for="rating-5"><i
+                                                    class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                            <input class="rating__input" name="rating" id="rating-5" value="5"
+                                                type="radio">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="full_name">Họ và tên<span class="text-danger">*</span>: </label>
+                                        <input type="text" class="form-control disabled" id="full_name" disabled
+                                            value="{{ Auth::user()->full_name }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email<span class="text-danger">*</span>:</label>
+                                        <input type="email" class="form-control disabled" id="email" disabled
+                                            value="{{ Auth::user()->email }}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="message">Đánh giá<span class="text-danger">*</span>:</label>
+                                        <textarea id="message" name="message" cols="30" rows="10" class="form-control" autofocus></textarea>
+                                        @error('message')
+                                            <p class="text-danger my-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" value="Đánh giá" class="btn py-3 px-4 btn-primary">
+                                    </div>
+
+                                </form>
+                            </div>
+                        @endif
+
+                    </div>
                 </div> <!-- .col-md-8 -->
                 <div class="col-lg-4 sidebar ftco-animate bg-light py-md-5">
                     <div class="sidebar-box pt-md-5">
                         <h3 class="text-center">Giá từ:
                             @if ($tour->sale)
-<span class="badge  text-danger border border-danger">Giảm giá
-                                {{$tour->sale}}%</span>
+                                <span class="badge  text-danger border border-danger">Giảm giá
+                                    {{ $tour->sale }}%</span>
                             @endif
 
                             <p class="text-primary">{{ number_format($tour->price_small) }} -
@@ -44,13 +138,13 @@
                         <div class="row">
                             @foreach ($related as $item)
                                 <div class="col-md-12 mb-5 ftco-animate">
-                                    <x-card-tour slug="{{ $item->slug }}"
-                                        sale="{{$item->sale}}"
+                                    <x-card-tour slug="{{ $item->slug }}" sale="{{ $item->sale }}"
                                         nightOfDay="{{ nightOfDay($item->date_of_department, $item->return_date) }}"
                                         title="{{ $item->title }}" price="{{ $item->price_large }}"
                                         cover="{{ $item->cover }}" startingPoint="{{ $item->starting_point }}"
                                         dateOfDepartment="{{ $item->date_of_department->format('d/m/Y h:m A') }}"
-                                        amountOfPeople="{{ $item->amount_of_people }}" avaiable="{{ $item->avaiable }}" />
+                                        amountOfPeople="{{ $item->amount_of_people }}"
+                                        avaiable="{{ $item->avaiable }}" />
                                 </div>
                             @endforeach
 

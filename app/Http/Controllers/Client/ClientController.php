@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\BookTour;
 use App\Models\FavouriteTour;
 use App\Models\Post;
+use App\Models\Review;
 use App\Models\Tag;
 use App\Models\Tour;
 use App\Models\User;
@@ -164,10 +165,38 @@ class ClientController extends Controller
     public function tourDetail($slug)
     {
         $tour = Tour::where('slug', $slug)->first();
+        if (!$tour) {
+           return abort(404);
+        }
         $related = Tour::where('slug', '<>', $slug)->where('destination_id', '=', $tour->destination_id)->limit(3)->get();
-        return view('client.tour-single', compact('tour', 'related'));
-    }
+        //    Kiểm tra người dùng hiện tại đối với tour hiện tại đã hoàn thành chưa.
+        $checkRate = BookTour::where('user_id', Auth::id())->where('tourId', $tour->id)->where('status', 3)->first();
+        $rated = Review::where('tourID',$tour->id)->get();
 
+        return view('client.tour-single', compact('tour', 'related', 'checkRate','rated'));
+    }
+    public function ratingTour(Request $request, $slug)
+    {
+        $request->validate([
+            'message' => 'required',
+        ], [
+            'message.required' => 'Vui lòng để lại một đánh giá',
+        ]);
+        //    Kiểm tra người dùng hiện tại đối với tour hiện tại đã hoàn thành chưa.
+        $tour = Tour::where('slug', $slug)->first();
+        if (!$tour) {
+            return abort(404);
+         }
+        $checkRate = BookTour::where('user_id', Auth::id())->where('tourId', $tour->id)->where('status', 3)->first();
+        if (!$checkRate) {
+            return back()->with('msgError', 'Bạn không đủ điều kiện thực hiện hành động này!');
+        }
+        $addReview = Review::insert(['userID' => Auth::id(), 'tourID' => $tour->id, 'message' => $request->message, 'rating' => $request->rating]);
+        if ($addReview) {
+            return back()->with('msgSuccess', 'Cảm ơn bạn chúng tôi đã nhận được thông tin!');
+        }
+        return back()->with('msgError', 'đánh giá thất bại!');
+    }
     public function bookTour($slug)
     {
         $tour = Tour::where('slug', $slug)->first();
@@ -207,14 +236,14 @@ class ClientController extends Controller
         }
         $total = ($request->adult * $request->price_large) + ($request->children * $request->price_small);
         if ($checkTourExist->sale > 0) {
-            $total = ((100 - $checkTourExist->sale )/100) * $total;
+            $total = ((100 - $checkTourExist->sale) / 100) * $total;
         }
 
         $validate['tourId'] = $checkTourExist->id;
         $validate['user_id'] = Auth::user()->id;
         $validate['price_large'] = $request->price_large;
         $validate['price_small'] = $request->price_small;
-$validate['sale'] = $checkTourExist->sale;
+        $validate['sale'] = $checkTourExist->sale;
         $validate['notes'] = $request->notes;
         $validate['status'] = 1;
         $validate['total'] = $total;
