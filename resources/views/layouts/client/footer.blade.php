@@ -1,3 +1,17 @@
+   <!-- Modal -->
+   <div class="modal fade" id="modalNotice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+       <div class="modal-content">
+           <div class="modal-body d-flex justify-content-between align-items-center flex-column text-center">
+               <img src="/images/yes.png" alt="" class="mb-4 icon-notice" id="icon-yes">
+               <img src="/images/no.png" alt="" class="mb-4 icon-notice" id="icon-no">
+               <h5><strong id="content-notice"></strong></h5>
+           </div>
+
+       </div>
+   </div>
+</div>
 <button class="chatbot-toggler">
     <span class="material-symbols-rounded">mode_comment</span>
     <span class="material-symbols-outlined">close</span>
@@ -9,7 +23,8 @@
     </header>
     <ul class="chatbox">
         <li class="chat incoming">
-            <img src="/images/tuvanvien.png" width="50" height="50" style="    object-fit: cover;
+            <img src="/images/tuvanvien.png" width="50" height="50"
+                style="    object-fit: cover;
         border-radius: 50%;
         margin-right: 5px;" alt="">
             <p>Xin chào 👋<br>Tôi có thể giúp gì được cho bạn?</p>
@@ -88,8 +103,8 @@
 <!-- loader -->
 <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
         <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
-        <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
-            stroke="#1ca0e2" />
+        <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4"
+            stroke-miterlimit="10" stroke="#1ca0e2" />
     </svg></div>
 
 
@@ -109,3 +124,68 @@
 <script src="{{ asset('client') }}/js/google-map.js"></script>
 <script src="{{ asset('client') }}/js/main.js"></script>
 <script src="{{ asset('client') }}/js/chatbot.js"></script>
+<script>
+    function addToFavourite(slug) {
+        $.ajax({
+            url: 'add-favourite',
+            method: 'post',
+            data: {
+                slug,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+
+                let content = $('#content-notice')
+                if (data) {
+                    $('#icon-yes').css('display', 'block');
+                    $('#icon-no').css('display', 'none');
+                    content.text('Thêm vào yêu thích thành công')
+                    $('#modalNotice').modal('show')
+                } else {
+                    $('#icon-no').css('display', 'block');
+                    $('#icon-yes').css('display', 'none');
+                    content.text('Thêm vào yêu thích không thành công')
+                    $('#modalNotice').modal('show')
+                }
+            },
+            error: function(err) {
+                if (err.status == 401) {
+                    window.location.href = "login"
+                }
+            }
+        })
+    }
+    function removeFavourite(slug) {
+        $.ajax({
+            url: 'remove-favourite',
+            method: 'delete',
+            data: {
+                slug,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+
+                let content = $('#content-notice')
+                if (data) {
+                    $('#icon-yes').css('display', 'block');
+                    $('#icon-no').css('display', 'none');
+                    content.text('Xoá thành công')
+                    $('#modalNotice').modal('show')
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    $('#icon-no').css('display', 'block');
+                    $('#icon-yes').css('display', 'none');
+                    content.text('Xóa không thành công')
+                    $('#modalNotice').modal('show')
+                }
+            },
+            error: function(err) {
+                if (err.status == 401) {
+                    window.location.href = "login"
+                }
+            }
+        })
+    }
+</script>

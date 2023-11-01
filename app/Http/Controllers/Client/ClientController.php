@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\BookTour;
+use App\Models\FavouriteTour;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Models\Tour;
@@ -123,6 +124,43 @@ class ClientController extends Controller
         return view('client.tour', compact('tours'));
     }
 
+    public function favouriteTour(Request $request)
+    {
+
+        $data = FavouriteTour::where('userID', Auth::id())->OrderBy('created_at', 'DESC')->paginate(10);
+        $tours = [];
+        foreach ($data as $item) {
+            $tours[] = $item->tour;
+        }
+        return view('client.favourite-tours', compact('data', 'tours'));
+    }
+    public function addFavourite(Request $request)
+    {
+        if ($request->has('slug')) {
+            $checkTour = Tour::where('slug', $request->slug)->first();
+            if (!$checkTour) {
+                return false;
+            }
+            $checkTourExist = FavouriteTour::where('userID', Auth::id())->where('tourID', $checkTour->id)->first();
+            if (!$checkTourExist) {
+                return FavouriteTour::insert(['userID' => Auth::id(), 'tourID' => $checkTour->id]);
+            } else {
+                return true;
+            }
+            return false;
+        }
+    }
+    public function removeFavourite(Request $request)
+    {
+        if ($request->has('slug')) {
+            $checkTour = Tour::where('slug', $request->slug)->first();
+            if (!$checkTour) {
+                return false;
+            }
+            return FavouriteTour::where('userID', Auth::id())->where('tourID', $checkTour->id)->delete();
+        }
+        return false;
+    }
     public function tourDetail($slug)
     {
         $tour = Tour::where('slug', $slug)->first();
@@ -167,14 +205,19 @@ class ClientController extends Controller
         if (($request->adult + $request->children) > $checkTourExist->avaiable) {
             return back()->with('msgError', 'Chỉ còn ' . $checkTourExist->avaiable . ' chỗ trống ');
         }
+        $total = ($request->adult * $request->price_large) + ($request->children * $request->price_small);
+        if ($checkTourExist->sale > 0) {
+            $total = ((100 - $checkTourExist->sale )/100) * $total;
+        }
+
         $validate['tourId'] = $checkTourExist->id;
         $validate['user_id'] = Auth::user()->id;
         $validate['price_large'] = $request->price_large;
         $validate['price_small'] = $request->price_small;
-
+$validate['sale'] = $checkTourExist->sale;
         $validate['notes'] = $request->notes;
         $validate['status'] = 1;
-        $validate['total'] = ($request->adult * $request->price_large) + ($request->children * $request->price_small);
+        $validate['total'] = $total;
         $check = BookTour::insert($validate);
         if ($check) {
             return redirect()->route('client.booking-success');

@@ -46,6 +46,13 @@
             'children' => [['name' => 'Danh sách bài viết', 'route' => 'dashboard.post.index'], ['name' => 'Tags', 'route' => 'dashboard.tag.index']],
         ],
         [
+            'name' => 'Quản lý Media',
+            'classIcon' => 'menu-icon tf-icons bx bxs-folder-open',
+            'route' => '#',
+            'can' => 'media',
+            'children' => [['name' => 'Tất cả ', 'route' => 'dashboard.media']],
+        ],
+        [
             'name' => 'Quản lý nhóm',
             'classIcon' => 'menu-icon tf-icons bx bxs-group',
             'can' => 'groups',

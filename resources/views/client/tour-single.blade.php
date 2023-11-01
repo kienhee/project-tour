@@ -24,7 +24,13 @@
                 </div> <!-- .col-md-8 -->
                 <div class="col-lg-4 sidebar ftco-animate bg-light py-md-5">
                     <div class="sidebar-box pt-md-5">
-                        <h3 class="text-center">Giá từ: <p class="text-primary">{{ number_format($tour->price_small) }} -
+                        <h3 class="text-center">Giá từ:
+                            @if ($tour->sale)
+<span class="badge  text-danger border border-danger">Giảm giá
+                                {{$tour->sale}}%</span>
+                            @endif
+
+                            <p class="text-primary">{{ number_format($tour->price_small) }} -
                                 {{ number_format($tour->price_large) }}VND / Người
                             </p>
                         </h3>
@@ -39,6 +45,7 @@
                             @foreach ($related as $item)
                                 <div class="col-md-12 mb-5 ftco-animate">
                                     <x-card-tour slug="{{ $item->slug }}"
+                                        sale="{{$item->sale}}"
                                         nightOfDay="{{ nightOfDay($item->date_of_department, $item->return_date) }}"
                                         title="{{ $item->title }}" price="{{ $item->price_large }}"
                                         cover="{{ $item->cover }}" startingPoint="{{ $item->starting_point }}"

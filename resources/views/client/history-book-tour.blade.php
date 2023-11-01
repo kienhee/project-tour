@@ -64,8 +64,12 @@
                                               <p class="mb-1"><strong>Số người lớn:</strong> {{ $item->adult }}</p>
                                               <p class="mb-1"><strong>Số trẻ em:</strong> {{ $item->children }}</p>
                                               <p class="mb-1"><strong>Ghi chú:</strong> {{ $item->notes }}</p>
+                                              <p class="mb-1"><strong>Tổng tiền vé:</strong> <span class="text-success">{{ number_format(($item->adult * $item->price_large) + ($item->children * $item->price_small)) }}VND</span></p>
+                                              @if ($item->sale > 0)
+                                              <p class="mb-1"><strong>Giảm giá:</strong>   <span class="badge  text-danger border border-danger">Giảm giá {{$item->sale}}%</span></p>
+                                              @endif
                                               <p class="mb-1"><strong>Tổng tiền:</strong>
-                                                  {{ number_format($item->total) }}VND</p>
+                                                  <span class="text-success">{{ number_format($item->total) }}VND</span></p>
                                           </td>
                                           <td>
                                               @if ($item->status == 1)

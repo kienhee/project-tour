@@ -8,9 +8,9 @@
         <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-center">
             <div class="col-md-9 ftco-animate pb-5 text-center">
                 <p class="breadcrumbs"><span class="mr-2"><a href="/">Trang chủ <i
-                                class="fa fa-chevron-right"></i></a></span> <span>Danh sách chuyến đi<i
+                                class="fa fa-chevron-right"></i></a></span> <span>Các tour đã lưu<i
                             class="fa fa-chevron-right"></i></span></p>
-                <h1 class="mb-0 bread">Danh sách chuyến đi</h1>
+                <h1 class="mb-0 bread">Các tour đã lưu</h1>
             </div>
         </div>
     </div>
@@ -18,7 +18,7 @@
 
 <section class="ftco-section ftco-no-pb">
     <div class="container">
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-md-12">
                 <div class="search-wrap-1 ftco-animate">
                     <form action="#" class="search-property-1">
@@ -42,15 +42,7 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- <div class="col-lg d-flex">
-                                <div class="form-group p-4">
-                                    <label for="return_date">Quay về</label>
-                                    <div class="form-field">
-                                        <input type="date" class="form-control pl-0" id="return_date" name="return_date"
-                                            value="{{ Request()->return_date }}">
-                                    </div>
-                                </div>
-                            </div> --}}
+
                             <div class="col-lg d-flex">
                                 <div class="form-group p-4">
                                     <label for="price">Khoảng giá</label>
@@ -148,12 +140,13 @@
                     </form>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </section>
 <section class="ftco-section">
     <div class="container">
         <div class="row">
+
             @foreach ($tours as $item)
             <div class="col-md-4 ftco-animate">
                 <x-card-tour slug="{{ $item->slug }}"
@@ -170,7 +163,7 @@
         <div class="row mt-5">
             <div class="col text-center">
                 <div class="block-27">
-                    {{ $tours->withQueryString()->links() }}
+                    {{ $data->withQueryString()->links() }}
                 </div>
             </div>
         </div>

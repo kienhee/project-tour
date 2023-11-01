@@ -67,6 +67,7 @@
                         <th>Chuyến đi </th>
                         <th>Vé người lớn </th>
                         <th>Vé trẻ em</th>
+                        <th>Giảm giá</th>
                         <th>Số lượng người</th>
                         <th>Còn trống chỗ</th>
                         <th>Ngày khởi hành</th>
@@ -105,6 +106,9 @@
                                 </td>
                                 <td class="px-0 text-center">
                                     <strong>{{ number_format($item->price_small) }}đ</strong>
+                                </td>
+                                <td class="px-0 text-center">
+                                    <strong class="badge bg-label-danger">{{$item->sale >0 ? $item->sale .'%' :'' }}</strong>
                                 </td>
                                 <td class="px-0 text-center">
                                     {{ $item->amount_of_people }}

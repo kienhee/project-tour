@@ -152,7 +152,7 @@
                                     <p class="text-danger my-1">{{ $message }}</p>
                                 @enderror
                             </div>
-                            <div class="mb-3 col-md-12">
+                            <div class="mb-3 col-md-6">
                                 <label for="destination_id" class="form-label">Địa điểm: <span
                                         class="text-danger">*</span></label>
                                 <select class="form-select @error('destination_id') is-invalid @enderror"
@@ -168,6 +168,15 @@
                                     @endif
                                 </select>
                                 @error('destination_id')
+                                    <p class="text-danger my-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="sale" class="form-label">Giảm giá (%): </label>
+                                <input class="form-control @error('sale') is-invalid @enderror" type="text"
+                                    id="sale" name="sale" value="{{ old('content') ?? $tour->sale  }}"
+                                    placeholder="Giảm giá"  />
+                                @error('sale')
                                     <p class="text-danger my-1">{{ $message }}</p>
                                 @enderror
                             </div>

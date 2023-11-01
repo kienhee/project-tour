@@ -91,7 +91,20 @@
                         <hr>
                         <input type="hidden" id="price_large" name="price_large" value="{{ $tour->price_large }}">
                         <input type="hidden" id="price_small" name="price_small" value="{{ $tour->price_small }}">
-                        <p class="text-right mb-4">
+                        <input type="hidden" id="sale" name="sale" value="{{ $tour->sale }}">
+                        <p class=" mb-4">
+                            <strong class="mr-3">Tiền vé: </strong> <span class="text-success" id="ticket-text">0 vnd
+                            </span>
+                        </p>
+                        @if ($tour->sale > 0)
+                            <p class=" mb-4">
+                                <strong class="mr-3">Giảm giá: </strong> <span class="text-danger"
+                                    id="sale-text">{{ $tour->sale }}%
+                                </span>
+                            </p>
+                        @endif
+
+                        <p class=" mb-4">
                             <strong class="mr-3">Tổng tiền: </strong> <span class="text-success" id="total-text">0
                             </span>
                         </p>
@@ -139,9 +152,22 @@
             let price_small = document.getElementById("price_small").value;
             let adult = document.getElementById("adult").value;
             let children = document.getElementById("children").value;
-            let totalText = document.getElementById("total-text");
-            let total = (adult * price_large) + (children * price_small);
-            totalText.innerHTML = formatNumber(total) + " vnd";
+            let sale = document.getElementById("sale").value;
+
+            let ticketOuput = document.getElementById("ticket-text");
+            let totalOutput = document.getElementById("total-text");
+            // calc
+            let ticketPrice = (adult * price_large) + (children * price_small);
+            if (parseInt(sale) > 0) {
+
+                ticketOuput.innerHTML = formatNumber(ticketPrice) + " vnd";
+                let totalPrice = (((100 - parseInt(sale)) / 100) * ticketPrice);
+                totalOutput.innerHTML = formatNumber(totalPrice) + " vnd";
+            } else {
+                ticketOuput.innerHTML = formatNumber(ticketPrice) + " vnd";
+                totalOutput.innerHTML = formatNumber(ticketPrice) + " vnd";
+            }
+
         }
         calculatorTotal()
     </script>

@@ -368,6 +368,7 @@
                 @foreach (getAllTour() as $item)
                     <div class="col-md-4 ftco-animate">
                         <x-card-tour slug="{{ $item->slug }}"
+                            sale="{{$item->sale}}"
                             nightOfDay="{{ nightOfDay($item->date_of_department, $item->return_date) }}"
                             title="{{ $item->title }}" price="{{ number_format($item->price_large) }}"
                             cover="{{ $item->cover }}" startingPoint="{{ $item->starting_point }}"

@@ -39,6 +39,9 @@ Route::prefix('/')->name('client.')->group(function () {
     Route::get('/blog/{slug}', [ClientController::class, 'blogDetail'])->name('blog-detail');
     Route::get('/contact', [ClientController::class, 'contact'])->name('contact');
     Route::get('/tour', [ClientController::class, 'tour'])->name('tour');
+    Route::get('/favourite-tours', [ClientController::class, 'favouriteTour'])->middleware('auth-client')->name('favourite-tours');
+    Route::post('/add-favourite', [ClientController::class, 'addFavourite'])->middleware('auth-client')->name('add-favourite');
+    Route::delete('/remove-favourite', [ClientController::class, 'removeFavourite'])->middleware('auth-client')->name('remove-favourite');
     Route::get('/tour/{slug}', [ClientController::class, 'tourDetail'])->name('tour-detail');
     Route::get('/book-tour/{slug}', [ClientController::class, 'bookTour'])->middleware('auth-client')->name('book-tour');
     Route::post('/book-tour/{slug}', [ClientController::class, 'hanldeBookTour'])->middleware('auth-client')->name('handle-book-tour');
@@ -137,7 +140,9 @@ Route::prefix('/dashboard')->name('dashboard.')->middleware('auth', 'can:admin')
         Route::delete('/restore/{id}', [UserController::class, 'restore'])->name('restore')->can('delete', User::class);
         Route::get('/account-setting', [UserController::class, 'AccountSetting'])->name('account-setting');
     });
-    Route::post('/upload', [ImageController::class, 'upload'])->name('upload');
+    Route::get('/media', function () {
+        return view('admin.media.index');
+    })->middleware('can:media')->name('media');
 });
 Route::prefix('/auth-dashboard')->name('auth.')->group(function () {
     Route::get('/login', [AuthController::class, 'loginView'])->name('loginView');

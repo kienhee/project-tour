@@ -20,7 +20,8 @@ class cardTour extends Component
     public $dateOfDepartment;
     public $amountOfPeople;
     public $avaiable;
-    public function __construct($cover, $slug, $nightOfDay, $price, $title, $startingPoint, $dateOfDepartment, $amountOfPeople, $avaiable)
+    public $sale;
+    public function __construct($cover, $slug, $nightOfDay, $price, $title, $startingPoint, $dateOfDepartment, $amountOfPeople, $avaiable,$sale)
     {
         $this->cover = $cover;
         $this->slug = $slug;
@@ -31,6 +32,7 @@ class cardTour extends Component
         $this->dateOfDepartment = $dateOfDepartment;
         $this->amountOfPeople = $amountOfPeople;
         $this->avaiable = $avaiable;
+        $this->sale = $sale;
     }
 
     /**

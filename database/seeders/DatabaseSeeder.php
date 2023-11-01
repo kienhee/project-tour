@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             'address' => 'Tuyeen quang',
         ]);
         DB::table('groups')->insert([
-            ['id' => 1, 'name' => 'Quản trị viên', 'permissions' => '{"admin":["view","add","edit","delete"],"dashboard":["view","add","edit","delete"],"destinations":["view","add","edit","delete"],"tours":["view","add","edit","delete"],"book-tours":["view","add","edit","delete"],"posts":["view","add","edit","delete"],"vehicles":["view","add","edit","delete"],"tags":["view","add","edit","delete"],"groups":["view","add","edit","delete","permission"],"users":["view","add","edit","delete"]}'],
+            ['id' => 1, 'name' => 'Quản trị viên', 'permissions' => '{"admin":["view"],"dashboard":["view"],"destinations":["view","add","edit","delete"],"tours":["view","add","edit","delete"],"book-tours":["view","add","edit","delete"],"posts":["view","add","edit","delete"],"vehicles":["view","add","edit","delete"],"tags":["view","add","edit","delete"],"groups":["view","add","edit","delete","permission"],"users":["view","add","edit","delete"],"media":["view"]}'],
             ['id' => 2, 'name' => 'Khách hàng', 'permissions' => ''],
         ]);
         DB::table('modules')->insert([
@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             ['id' => 8, 'routeName' => 'tags', 'title' => 'Quản lý thẻ tag'],
             ['id' => 9, 'routeName' => 'groups', 'title' => 'Quản lý nhóm'],
             ['id' => 10, 'routeName' => 'users', 'title' => 'Quản lý người dùng'],
+            ['id' => 11, 'routeName' => 'media', 'title' => 'Quản lý upload'],
         ]);
 
         DB::table('vehicles')->insert([

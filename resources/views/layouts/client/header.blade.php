@@ -9,7 +9,7 @@ $menu = [['name' => 'Trang chủ', 'route' => 'client.index'], ['name' => 'Đị
         <a class="navbar-brand" href="{{ route('client.index') }}">Hello World<span>Travel Agency</span></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
             aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="oi oi-menu"></span> Menu
+            <span class="oi oi-menu"></span> <i class="fa-solid fa-bars" style="font-size: 25px"></i>
         </button>
 
         <div class="collapse navbar-collapse" id="ftco-nav">
@@ -28,6 +28,7 @@ $menu = [['name' => 'Trang chủ', 'route' => 'client.index'], ['name' => 'Đị
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ route('client.user') }}">Thông tin tài khoản</a>
+                        <a class="dropdown-item" href="{{ route('client.favourite-tours') }}">Các Tour đã lưu</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('client.logout') }}">Đăng xuất</a>
                     </div>

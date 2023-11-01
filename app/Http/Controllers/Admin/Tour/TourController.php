@@ -57,19 +57,19 @@ class TourController extends Controller
             "cover" => "required",
 
         ], [
-            "title.required" => "Vui lòng nhập trường này1!",
-            "slug.required" => "Vui lòng nhập trường này2!",
-            "content.required" => "Vui lòng nhập trường này3!",
-            "starting_point.required" => "Vui lòng nhập trường này4!",
-            "date_of_department.required" => "Vui lòng nhập trường này5!",
-            "return_date.required" => "Vui lòng nhập trường này6!",
-            "amount_of_people.required" => "Vui lòng nhập trường này7!",
-            "price_large.required" => "Vui lòng nhập trường này8!",
-            "price_small.required" => "Vui lòng nhập trường này9!",
-            "vehicle_id.required" => "Vui lòng nhập trường này0!",
-            "road_map.required" => "Vui lòng nhập trường này22!",
+            "title.required" => "Vui lòng nhập trường này!",
+            "slug.required" => "Vui lòng nhập trường này!",
+            "content.required" => "Vui lòng nhập trường này!",
+            "starting_point.required" => "Vui lòng nhập trường này!",
+            "date_of_department.required" => "Vui lòng nhập trường này!",
+            "return_date.required" => "Vui lòng nhập trường này!",
+            "amount_of_people.required" => "Vui lòng nhập trường này!",
+            "price_large.required" => "Vui lòng nhập trường này!",
+            "price_small.required" => "Vui lòng nhập trường này!",
+            "vehicle_id.required" => "Vui lòng nhập trường này!",
+            "road_map.required" => "Vui lòng nhập trường này!",
             "cover.required" => "Vui lòng thêm ảnh!",
-            "destination_id.required" => "Vui lòng nhập trường này22!",
+            "destination_id.required" => "Vui lòng nhập trường này!",
             "title.unique" => "Tiêu đề đã tồn tại!",
             "slug.unique" => "Đường dẫn đã tồn tại!",
             "amount_of_people.numeric" => "Giá trị phải là số!",
@@ -80,6 +80,7 @@ class TourController extends Controller
 
 
         ]);
+        $validate['sale']= $request->sale;
         $validate['avaiable'] = $request->amount_of_people;
         if ($request->hasFile('cover')) {
             $path_img =  $request->file('cover')->store('public/photos/1');
@@ -114,19 +115,19 @@ class TourController extends Controller
             "cover" => "required",
 
         ], [
-            "title.required" => "Vui lòng nhập trường này1!",
-            "slug.required" => "Vui lòng nhập trường này2!",
-            "content.required" => "Vui lòng nhập trường này3!",
-            "starting_point.required" => "Vui lòng nhập trường này4!",
-            "date_of_department.required" => "Vui lòng nhập trường này5!",
-            "return_date.required" => "Vui lòng nhập trường này6!",
-            "amount_of_people.required" => "Vui lòng nhập trường này7!",
-            "price_large.required" => "Vui lòng nhập trường này8!",
-            "price_small.required" => "Vui lòng nhập trường này9!",
-            "vehicle_id.required" => "Vui lòng nhập trường này0!",
-            "road_map.required" => "Vui lòng nhập trường này22!",
+            "title.required" => "Vui lòng nhập trường này!",
+            "slug.required" => "Vui lòng nhập trường này!",
+            "content.required" => "Vui lòng nhập trường này!",
+            "starting_point.required" => "Vui lòng nhập trường !",
+            "date_of_department.required" => "Vui lòng nhập trường này!",
+            "return_date.required" => "Vui lòng nhập trường này!",
+            "amount_of_people.required" => "Vui lòng nhập trường !",
+            "price_large.required" => "Vui lòng nhập trường này!",
+            "price_small.required" => "Vui lòng nhập trường này!",
+            "vehicle_id.required" => "Vui lòng nhập trường này!",
+            "road_map.required" => "Vui lòng nhập trường này!",
             "cover.required" => "Vui lòng thêm ảnh!",
-            "destination_id.required" => "Vui lòng nhập trường này22!",
+            "destination_id.required" => "Vui lòng nhập trường này!",
             "title.unique" => "Tiêu đề đã tồn tại!",
             "slug.unique" => "Đường dẫn đã tồn tại!",
             "amount_of_people.numeric" => "Giá trị phải là số!",
@@ -137,6 +138,7 @@ class TourController extends Controller
 
 
         ]);
+        $validate['sale']= $request->sale;
         $validate['avaiable'] = $request->amount_of_people;
         if ($request->hasFile('cover')) {
             $path_img =  $request->file('cover')->store('public/photos/1');
