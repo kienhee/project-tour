@@ -22,7 +22,9 @@ $secondary: #040e26;
  *
  *  This codepen uses FontAwesome icons
  */
-
+ .checked {
+    color: orange;
+  }
  #full-stars-example {
 
     /* use display:inline-flex to prevent whitespace issues. alternatively, you can put all the children of .rating-group on a single line */

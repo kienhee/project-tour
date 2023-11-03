@@ -99,3 +99,19 @@ function isRole($dataArr, $module, $role = 'view')
     }
     return false;
 }
+
+function rating($ratings,$count)
+{
+        $averageRating = $ratings / $count;
+
+        for ($i = 1; $i <= 5; $i++) {
+            if ($i <= floor($averageRating)) {
+                echo '<span class="fa fa-star checked"></span>';
+            } elseif ($i - $averageRating <= 0.5) {
+                echo '<span class="fa fa-star-half-stroke checked"></span>';
+            } else {
+                echo '<span class="fa fa-star"></span>';
+            }
+        }
+
+}

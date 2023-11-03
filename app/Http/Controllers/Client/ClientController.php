@@ -172,8 +172,9 @@ class ClientController extends Controller
         //    Kiểm tra người dùng hiện tại đối với tour hiện tại đã hoàn thành chưa.
         $checkRate = BookTour::where('user_id', Auth::id())->where('tourId', $tour->id)->where('status', 3)->first();
         $rated = Review::where('tourID',$tour->id)->get();
-
-        return view('client.tour-single', compact('tour', 'related', 'checkRate','rated'));
+        $checkUserRate = Review::where('userID',Auth::id())->where('tourID', $tour->id)->first();
+     
+        return view('client.tour-single', compact('tour', 'related', 'checkRate','rated','checkUserRate'));
     }
     public function ratingTour(Request $request, $slug)
     {

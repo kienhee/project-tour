@@ -24,6 +24,7 @@
             chỗ: {{ $amountOfPeople }}</p>
         <p style="font-size: 15px;" class="mb-1"><i class="fa-solid fa-users text-primary"></i> Còn
             trống: {{ $avaiable }}</p>
+
             <div class="d-flex " style="gap: 10px">
                 <a href="{{ route('client.tour-detail', $slug) }}" class="btn btn-primary w-100">Xem thêm</a>
                 @if ( url()->current() == route('client.favourite-tours'))

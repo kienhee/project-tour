@@ -35,7 +35,22 @@
                     {!! $tour->content !!}
                     <hr>
                     <div class="">
-                        <h3 class="mb-5" style="font-size: 20px; font-weight: bold;">6 Đánh giá</h3>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h3 style="font-size: 20px; font-weight: bold;">{{ $rated->count() }} lượt đánh giá
+                            </h3>
+                            <div>
+                                @if ($rated->count() > 0)
+                                <strong>{{ $rated->sum('rating') / $rated->count() }}/5</strong>
+
+                                {{rating($rated->sum('rating'),$rated->count()  )}}
+
+                                @endif
+
+
+                            </div>
+                        </div>
+
+                        <hr>
                         <ul class="comment-list">
                             @foreach ($rated as $item)
                                 <li class="comment">
@@ -45,6 +60,15 @@
                                     </div>
                                     <div class="comment-body">
                                         <h3>{{ $item->user->full_name }}</h3>
+                                        @for ($i = 0; $i < 5; $i++)
+                                            @if ($i < $item->rating)
+                                                <span class="fa fa-star checked"></span>
+                                            @else
+                                                <span class="fa fa-star"></span>
+                                            @endif
+                                        @endfor
+
+
                                         <div class="meta"> {{ $item->created_at->format('d/m/Y h:m A') }}</div>
                                         <p>{{ $item->message }}</p>
                                     </div>
@@ -52,14 +76,10 @@
                             @endforeach
 
 
-
-
                         </ul>
-                        @if ($checkRate)
-                            <div class="comment-form-wrap pt-5">
-                                <h3 class="mb-5 text-center" style="font-size: 20px; font-weight: bold;">Để lại một đánh giá
-                                </h3>
 
+                        @if ($checkRate && !$checkUserRate)
+                            <div class="comment-form-wrap pt-5">
 
                                 <form action="{{ route('client.rating-tour', $tour->slug) }}" method="POST"
                                     class="p-5 bg-light">
